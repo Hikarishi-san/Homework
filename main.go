@@ -73,7 +73,6 @@ func main() {
         netTotal, _ := strconv.ParseInt(fields[5], 10, 64)
         netUsed, _ := strconv.ParseInt(fields[6], 10, 64)
 
-        // Используем целочисленное деление для памяти
         memUsagePercent := (memUsed * 100) / memTotal
         
         freeDisk := diskTotal - diskUsed
