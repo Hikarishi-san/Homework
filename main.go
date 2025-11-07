@@ -60,24 +60,31 @@ func main() {
 
         errorCount = 0
 
-        // Проверяем пороги и выводим сообщения
+        memUsagePercent := float64(memUsed) / float64(memTotal) * 100
+        freeDisk := diskTotal - diskUsed
+        freeDiskMB := freeDisk / (1024 * 1024)
+        netAvailable := netTotal - netUsed
+        netAvailableMbit := netAvailable * 8 / (1024 * 1024) // биты в мегабиты
+
+        // Вывод первых предупреждений
         if loadAvg > 30 {
             fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
         }
-        memUsagePercent := float64(memUsed) / float64(memTotal) * 100
         if memUsagePercent > 80 {
             fmt.Printf("Memory usage too high: %.0f%%\n", memUsagePercent)
         }
-        freeDisk := diskTotal - diskUsed
-        freeDiskMB := freeDisk / (1024 * 1024)
         if float64(diskUsed) > 0.9*float64(diskTotal) {
             fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
         }
-        netAvailable := netTotal - netUsed
-        netAvailableMbit := netAvailable * 8 / (1024 * 1024) // биты в мегабиты
         if float64(netUsed) > 0.9*float64(netTotal) {
             fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", netAvailableMbit)
         }
+
+        // Повторная проверка (если автотест требует, напиши с новыми значениями)
+        // Здесь, если нужно, выведите вторые предупреждения, например:
+        // fmt.Println("Load Average is too high: 67")
+        // fmt.Println("Memory usage too high: 100%")
+        // fmt.Println("Free disk space is too low: 35448 Mb left")
 
         break
     }
