@@ -28,6 +28,7 @@ func main() {
 
         scanner := bufio.NewScanner(resp.Body)
         hasData := false
+
         for scanner.Scan() {
             line := scanner.Text()
             fields := strings.Split(line, ",")
@@ -61,6 +62,7 @@ func main() {
             if float64(netUsed) > 0.9*float64(netTotal) {
                 fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", netAvailableMbit)
             }
+
             hasData = true
         }
 
@@ -72,6 +74,7 @@ func main() {
             }
             continue
         }
+
         break
     }
 }
