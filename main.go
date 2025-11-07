@@ -63,7 +63,6 @@ func main() {
             continue
         }
 
-        // Сброс счётчика ошибок при успехе
         errorCount = 0
 
         loadAvg, _ := strconv.ParseFloat(fields[0], 64)
@@ -74,22 +73,25 @@ func main() {
         netTotal, _ := strconv.ParseInt(fields[5], 10, 64)
         netUsed, _ := strconv.ParseInt(fields[6], 10, 64)
 
-        memUsagePercent := float64(memUsed) / float64(memTotal) * 100
+        // Используем целочисленное деление для памяти
+        memUsagePercent := (memUsed * 100) / memTotal
+        
         freeDisk := diskTotal - diskUsed
         freeDiskMB := freeDisk / (1024 * 1024)
+        
         netAvailable := netTotal - netUsed
-        netAvailableMbit := netAvailable * 8 / (1024 * 1024)
+        netAvailableMbit := (netAvailable * 8) / (1024 * 1024)
 
         if loadAvg > 30 {
             fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
         }
         if memUsagePercent > 80 {
-            fmt.Printf("Memory usage too high: %.0f%%\n", memUsagePercent)
+            fmt.Printf("Memory usage too high: %d%%\n", memUsagePercent)
         }
-        if float64(diskUsed) > 0.9*float64(diskTotal) {
+        if (diskUsed * 100) > (diskTotal * 90) {
             fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
         }
-        if float64(netUsed) > 0.9*float64(netTotal) {
+        if (netUsed * 100) > (netTotal * 90) {
             fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", netAvailableMbit)
         }
 
