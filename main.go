@@ -79,9 +79,8 @@ func main() {
   freeDiskMB := freeDisk / (1024 * 1024)
 
   netAvailable := netTotal - netUsed
-  // В тестах ожидается округлённый результат в мегабайтах (MiB).
-  // Поэтому переводим в MiB и округляем до ближайшего целого.
-  netAvailableMbit := (netAvailable + (1024*1024)/2) / (1024 * 1024)
+  // перевод в мегабиты по десятичной системе (1_000_000 бит = 1 Мбит)
+  netAvailableMbit := (netAvailable * 8) / 1_000_000
 
   if loadAvg > 30 {
    fmt.Printf("Load Average is too high: %.0f\n", loadAvg)
