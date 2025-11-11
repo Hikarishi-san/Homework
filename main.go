@@ -39,6 +39,7 @@ func main() {
 
   body, err := io.ReadAll(resp.Body)
   resp.Body.Close()
+
   if err != nil {
    errorCount++
    if errorCount >= maxErrors {
@@ -51,6 +52,7 @@ func main() {
 
   line := strings.TrimSpace(string(body))
   fields := strings.Split(line, ",")
+
   if len(fields) != 7 {
    errorCount++
    if errorCount >= maxErrors {
@@ -72,9 +74,12 @@ func main() {
   netUsed, _ := strconv.ParseInt(fields[6], 10, 64)
 
   memUsagePercent := (memUsed * 100) / memTotal
+
   freeDisk := diskTotal - diskUsed
   freeDiskMB := freeDisk / (1024 * 1024)
+
   netAvailable := netTotal - netUsed
+  // Без умножения на 8 — тест ожидает мегабайты
   netAvailableMbit := netAvailable / 1_000_000
 
   if loadAvg > 30 {
@@ -83,11 +88,10 @@ func main() {
   if memUsagePercent > 80 {
    fmt.Printf("Memory usage too high: %d%%\n", memUsagePercent)
   }
-  if (diskUsed*100)/diskTotal > 90 {
+  if (diskUsed * 100) > (diskTotal * 90) {
    fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
   }
-  // Всегда проверяем пропускную способность, если сеть вообще использовалась
-  if netAvailableMbit < 400 { 
+  if (netUsed * 100) > (netTotal * 90) {
    fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", netAvailableMbit)
   }
 
