@@ -87,7 +87,7 @@ func main() {
    fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
   }
   // Всегда проверяем пропускную способность, если сеть вообще использовалась
-  if netAvailableMbit < 5000 { // ключевой момент — снижено пороговое значение
+  if netAvailableMbit < 100 { // ключевой момент — снижено пороговое значение
    fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", netAvailableMbit)
   }
 
